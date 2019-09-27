@@ -1,3 +1,5 @@
+'use strict';
+
 var collectionOfList = [];
 var activeList;
 var activeTask;
@@ -7,160 +9,190 @@ init();
 function init() {
     addEventListener(getElementById("sideBarButton"), "click", sidePanelOperation);
     addEventListener(getElementById("trashListIcon"), "click", deleteOperationForList);
-    addEventListener(getElementById("checkbox"), "change", checkOperationForSteps);
+    addEventListener(getElementById("checkbox"), "change", toggleOperationForSteps);
     addEventListener(getElementById("stepInput"), "keydown", stepInputBoxOperation);
     addEventListener(getElementById("taskInput"), "keydown", taskInputOperation);
     addEventListener(getElementById("listInput"), "keydown", listInputOperation);
 }
 
 /**
+ * Adds Event Listner to HTML Element with event and function
  * 
- * @param {*} element 
- * @param {*} event 
- * @param {*} functionName 
+ * @param {HTMLElement} element      - Specifies HTML Element.
+ * @param {string}      event        - Specifies Event value.
+ * @param {function}    functionName - Specifies Name of the function.
  */
 function addEventListener(element, event, functionName) {
     element.addEventListener(event, functionName);
 }
 
 /**
+ * Appends Child Element to Parent Element.
  * 
- * @param {*} parentChild 
- * @param {*} childElement 
+ * @param {HTMLElement} parentElement - Specifies Parent Element.
+ * @param {HTMLElement} childElement  - Specifies Child Element.
  */
-function appendParentAndChild(parentChild, childElement) {
-    parentChild.appendChild(childElement);
+function appendParentAndChild(parentElement, childElement) {
+    parentElement.appendChild(childElement);
 }
 
 /**
+ * Returns a reference to the first object with the specified value of the ID attribute.
  * 
- * @param {*} elementId 
+ * @param {string} elementId - String that specifies the ID value.
  */
 function getElementById(elementId) {
     return document.getElementById(elementId);
 }
 
 /**
+ * Returns Created HTML element by tag name.
  * 
- * @param {*} elementName 
+ * @param {string} tagName - Specifies tag name value used to create element. 
  */
-function createElementByString(elementName) {
-    return document.createElement(elementName);
+function createElementByTagName(tagName) {
+    return document.createElement(tagName);
 }
 
 /**
+ * Returns Text String from specified text value.
  * 
- * @param {*} element 
+ * @param {string} text - String that specifies text value.
+ */
+function createTextNode(text) {
+    return document.createTextNode(text);
+}
+
+/**
+ * Sets HTML Element as Empty.
+ * 
+ * @param {HTMLElement} element - Specifies HTML Element.
  */
 function setElementAsEmpty(element) {
     element.innerHTML = "";
 }
 
 /**
+ * Returns Undeleted Objects from array by objects status.
  * 
- * @param {*} array 
+ * @param {Array} array - Array that specifies array value to filter. 
  */
 function getUndeletedObjects(array) {
     return array.filter(object => object.status === true);
 }
 
 /**
+ * Returns HTML div element for list in Page.
  * 
- * @param {*} list 
+ * @param {Object} list - Used to set ID attribute to div element.
  */
 function getListDiv(list) {
-    var divElement = createElementByString("DIV");
+    var divElement = createElementByTagName("DIV");
     addEventListener(divElement, "click", listOperation);
-    divElement.id = list.id;
-    divElement.className = "leftPanelContent";
+    assignIdAndClassName(divElement, list.id, "leftPanelContent");
     return divElement;
 }
 
 /**
+ * Assigns ID and Class name to HTML element.
  * 
- * @param {*} list 
+ * @param {HTMLElement} element    - HTML element that specifies element to used.
+ * @param {string}      id         - String that specifies ID value.
+ * @param {string}      className  - String that specifies class name.
+ */
+function assignIdAndClassName(element, id, className) {
+    element.id = id;
+    element.className = className;
+}
+
+/**
+ * Returns HTML I element after creating list icon.
+ * 
+ * @param {Object} list - Used to set ID to HTML I Element.
  */
 function getListIcon(list) {
-    var iElement = document.createElement("I");
-    iElement.className = "fa fa-list";
-    iElement.id = list.id;
+    var iElement = createElementByTagName("I");
+    assignIdAndClassName(iElement, list.id, "fa fa-list");
     return iElement;
 }
 
 /**
+ * Returns inner div element for creating list in Page.
  * 
- * @param {*} list 
+ * @param {Object} list - Used to set ID to HTML div element.
  */
 function getListInnerDiv(list) {
-    var divElement = createElementByString("DIV");
-    divElement.className = "leftPanelTitle blue bold";
-    divElement.id = list.id;
+    var divElement = createElementByTagName("DIV");
+    assignIdAndClassName(divElement, list.id, "leftPanelTitle blue bold");
     return divElement;
 }
 
 /**
+ * Returns Span element with object name and assign ID.
  * 
- * @param {*} object 
+ * @param {Object} object - Object which is used to specifies object name and ID.
  */
 function getSpanWithTextNode(object) {
-    var spanElement = createElementByString("SPAN");
+    var spanElement = createElementByTagName("SPAN");
     spanElement.id = object.id;
-    let textElement = document.createTextNode(object.name);
-    spanElement.appendChild(textElement);
+    let textElement = createTextNode(object.name);
+    appendParentAndChild(spanElement, textElement)
     return spanElement;
 }
 
 /**
+ * Returns Unfinished Objects as Array form Array of Objects by filtering with isFinished flag variable.
  * 
- * @param {*} array 
+ * @param {Array} array - Array to be filter.
  */
 function getUnfinishedObjectFromArray(array) {
     return array.filter(object => object.isFinished === false);
 }
 
 /**
+ * Sets Unfinished Task Count in div element by calculating from list object.
  * 
- * @param {*} list 
- * @param {*} div 
+ * @param {Object}      list - Object that specifies list object.
+ * @param {HTMLElement} div  - HTML element that specifies div element.
  */
 function setUnfinishedTaskCountInDiv(list, div) {
     var unFinishedTasksLength = getUnfinishedObjectFromArray(list.tasks).length;
-    if(unFinishedTasksLength > 0) {
-        var spanElementForTaskCount = createElementByString("SPAN");
+    if (unFinishedTasksLength > 0) {
+        var spanElementForTaskCount = createElementByTagName("SPAN");
         spanElementForTaskCount.id = list.id;
         spanElementForTaskCount.className = "taskCount";
         var CountTextElement = document.createTextNode(unFinishedTasksLength);
-        spanElementForTaskCount.appendChild(CountTextElement);
-        div.appendChild(spanElementForTaskCount);
+        appendParentAndChild(spanElementForTaskCount, CountTextElement);
+        appendParentAndChild(div, spanElementForTaskCount);
     }
 }
 
 /**
- * 
+ * Loads created list in left panel.
  */
 function loadLists() {
     var listContainer = getElementById("sideList");
     setElementAsEmpty(listContainer);
     var unDeletedList = getUndeletedObjects(collectionOfList);
-    for (listIndex in unDeletedList) {
+    for (let listIndex in unDeletedList) {
         let list = unDeletedList[listIndex];
         let divElement = getListDiv(list);
         let iElement = getListIcon(list);
-        divElement.appendChild(iElement);
+        appendParentAndChild(divElement, iElement);
         let innerDivElement = getListInnerDiv(list);
         let spanElement = getSpanWithTextNode(list);
-        innerDivElement.appendChild(spanElement);
+        appendParentAndChild(innerDivElement, spanElement);
         setUnfinishedTaskCountInDiv(list, innerDivElement);
-        divElement.appendChild(innerDivElement);
-        listContainer.appendChild(divElement);
+        appendParentAndChild(divElement, innerDivElement);
+        appendParentAndChild(listContainer, divElement);
     }
 }
 
 /**
- * Soft Delete the Active List
+ * Soft Delete the Active List.
  */
 function deleteOperationForList() {
-    if(confirm("Are you want to delete" + activeList.name)){
+    if (confirm("Are you sure want to delete '" + activeList.name + "'")) {
         activeList.status = false;
         loadTasks();
     }
@@ -170,20 +202,20 @@ function deleteOperationForList() {
  * 
  * @param {*} list 
  */
-function getIndexOfList(list) {
+/*function getIndexOfList(list) {
     return list === activeList;
-}
+}*/
 
 /**
- * 
+ * Sets Active List Name in Task div Header.
  */
 function setActiveListName() {
-    if(activeList.status === true) {
+    if (activeList.status === true) {
         document.getElementById("displayListTitle").innerHTML = activeList.name;
     } else { //TODO change default list as "Task"
-        document.getElementById("displayListTitle").innerHTML = "Tasks";
+        getElementById("displayListTitle").innerHTML = "Tasks";
         activeList = "";
-        document.getElementById("taskDetails").style.display = "none";
+        getElementById("taskDetails").classList.add("displayNone");
         /*var previousListIndex = collectionOfList.findIndex(getIndexOfList) - 1;
         activeList = collectionOfList[previousListIndex];
         document.getElementById("displayListTitle").innerHTML = activeList.name;*/
@@ -191,109 +223,123 @@ function setActiveListName() {
 }
 
 /**
+ * Returns HTML div element for task in page.
  * 
- * @param {*} task 
+ * @param {Object} task - Used to set ID attribute to div element.
  */
 function getTaskDiv(task) {
-    var divElement = createElementByString("DIV");
-    addEventListener(divElement, "click", taskClickOperation)
-    divElement.className = "tasks";
-    divElement.id = task.id;
+    var divElement = createElementByTagName("DIV");
+    addEventListener(divElement, "click", taskClickOperation);
+    assignIdAndClassName(divElement, task.id, "tasks");
     return divElement;
 }
 
 /**
+ * Returns Checkbox after creates div element for task in page.
  * 
- * @param {*} task 
+ * @param {Object} task - Object used to set ID attribute to checkBox.
  */
 function getTaskCheckBox(task) {
-    var checkBoxDiv = createElementByString("DIV");
+    var checkBoxDiv = createElementByTagName("DIV");
     checkBoxDiv.className = "checkBox";
     var checkBox = document.createElement("INPUT");
     checkBox.type = "checkbox";
-    checkBox.id = "taskCheckBox" + task.id;
     checkBox.name = task.id;
-    if(task.isFinished) {
-        checkBox.checked = true;
-    } else {
-        checkBox.checked = false;
-    }
-    addEventListener(checkBox, "change", changeOperationForTaskCheckBox);
+    assignIdAndClassName(checkBox, "taskCheckBox" + task.id, "checkbox");
+    toggleCheckboxCheckedProperty(task, checkBox);
+    addEventListener(checkBox, "change", eventOperationForTaskCheckBox);
     var label = document.createElement("LABEL");
     label.htmlFor = "taskCheckBox" + task.id;
-    checkBoxDiv.appendChild(checkBox);
-    checkBoxDiv.appendChild(label);
+    appendParentAndChild(checkBoxDiv, checkBox);
+    appendParentAndChild(checkBoxDiv, label);
     return checkBoxDiv;
 }
 
 /**
+ * Toggles Checkbox checked Property with condition.
  * 
- * @param {*} task 
+ * @param {Object}      task     - Object used to check condition.
+ * @param {HTMLElement} checkBox - HTML element which is to be toggled.
+ */
+function toggleCheckboxCheckedProperty(task, checkBox) {
+    if (task.isFinished) {
+        checkBox.checked = true;
+    } else {
+        checkBox.checked = false;
+    }
+}
+
+/**
+ * Returns inner div element for task in page.
+ * 
+ * @param {Object} task - Object used to set ID attribute to inner div element.
  */
 function getTaskInnerDiv(task) {
-    var divElement = createElementByString("DIV");
+    var divElement = createElementByTagName("DIV");
     divElement.className = "taskTitle";
     divElement.id = task.id;
     return divElement;
 }
 
 /**
+ * Toggles class name of span element with condition.
  * 
- * @param {*} task 
- * @param {*} spanElement 
+ * @param {Object}      task        - Object that is used to check condition.
+ * @param {HTMLElement} spanElement - HTML element that specifies span element.
  */
-function changeSpanClassNameByTask(task, spanElement) {
-    if(task.isFinished) {
-        spanElement.className = "finished";
+function toggleSpanClassNameByTask(task, spanElement) {
+    if (task.isFinished) {
+        spanElement.classList.add("finished");
     } else {
         spanElement.classList.remove("finished");
     }
 }
 
 /**
+ * Sets Steps Count in Task div by calculating step count with task object.
  * 
- * @param {*} task 
- * @param {*} div 
+ * @param {Object}      task - Object that used to calculate steps count.
+ * @param {HTMLElement} div  - HTML element specifies that div element.
  */
 function setStepsCountInDiv(task, div) {
     var stepCount = getUndeletedObjects(task.steps).length;
-    if(stepCount > 0) {
+    if (stepCount > 0) {
         let finishedStepCount = task.steps.filter(step => step.isFinished === true).length;
-        let spanStepCount = createElementByString("SPAN");
+        let spanStepCount = createElementByTagName("SPAN");
         let textStepCount = document.createTextNode(finishedStepCount + " of " + stepCount);
-        spanStepCount.appendChild(textStepCount);
-        div.appendChild(spanStepCount);
+        appendParentAndChild(spanStepCount, textStepCount);
+        appendParentAndChild(div, spanStepCount);
     }
 }
 
 /**
- * 
+ * Loads Task in page.
  */
 function loadTasks() {
     setActiveListName();
     var taskContainer = document.getElementById("tasksContainer");
     setElementAsEmpty(taskContainer);
-    for (taskIndex in activeList.tasks) {
+    for (let taskIndex in activeList.tasks) {
         let task = activeList.tasks[taskIndex];
         let divElement = getTaskDiv(task);
         let checkBoxDiv = getTaskCheckBox(task);
-        divElement.appendChild(checkBoxDiv);
+        appendParentAndChild(divElement, checkBoxDiv);
         let innerDivElement = getTaskInnerDiv(task);
         let spanElement = getSpanWithTextNode(task);
-        changeSpanClassNameByTask(task, spanElement);
-        innerDivElement.appendChild(spanElement);
+        toggleSpanClassNameByTask(task, spanElement);
+        appendParentAndChild(innerDivElement, spanElement);
         setStepsCountInDiv(task, innerDivElement);
-        divElement.appendChild(innerDivElement);
-        taskContainer.appendChild(divElement);
+        appendParentAndChild(divElement, innerDivElement);
+        appendParentAndChild(taskContainer, divElement);
     }
     loadLists();
 }
 
 /**
- * 
+ * Toggles active task isfinished flag variable with condition of checkbox.
  */
-function checkOperationForSteps() {
-    if(this.checked) {
+function toggleOperationForSteps() {
+    if (this.checked) {
         this.checked = true;
         activeTask.isFinished = true;
     } else {
@@ -305,13 +351,12 @@ function checkOperationForSteps() {
 }
 
 /**
- * 
- * @param {*} event 
+ * Toggles task's isFinished flag variable by checkbox checked property, event operation for task checkbox.
  */
-function changeOperationForTaskCheckBox(event) {
+function eventOperationForTaskCheckBox() {
     var taskId = event.target.name;
     var task = activeList.tasks.find(task => task.id === taskId);
-    if(this.checked) {
+    if (this.checked) {
         var taskId = event.target.name;
         var task = activeList.tasks.find(task => task.id === taskId);
         task.isFinished = true;
@@ -323,12 +368,12 @@ function changeOperationForTaskCheckBox(event) {
 }
 
 /**
- * 
+ * Toggles step's isFinished flag variable by checkbox checked property, event operation for step checkbox.
  */
-function changeOperationForStepCheckBox() {
+function eventOperationForStepCheckBox() {
     var stepId = event.target.name;
     var step = activeTask.steps.find(step => step.id === stepId);
-    if(this.checked) {
+    if (this.checked) {
         step.isFinished = true;
     } else {
         step.isFinished = false;
@@ -338,10 +383,12 @@ function changeOperationForStepCheckBox() {
 }
 
 /**
+ * Toggles taskTitle class name with condition.
  * 
+ * @param {HTMLElement} taskTitle - HTML element specifies that taskTitle.
  */
 function toggleTaskTitle(taskTitle) {
-    if(activeTask.isFinished) {
+    if (activeTask.isFinished) {
         taskTitle.className = "finished";
         getElementById("checkbox").checked = true;
     } else {
@@ -351,31 +398,32 @@ function toggleTaskTitle(taskTitle) {
 }
 
 /**
- * 
+ * Returns Step div in Page.
  */
 function getStepDiv() {
-    var divElement = createElementByString("DIV");
+    var divElement = createElementByTagName("DIV");
     divElement.className = "step";
     return divElement;
 }
 
 /**
+ * Returns Step div checkbox for step in page.
  * 
- * @param {*} step 
+ * @param {Object} step - Object used to set ID attribute HTML elements.
  */
 function getCheckBoxDivWithCheckBox(step) {
-    var checkBoxDiv = createElementByString("DIV");
+    var checkBoxDiv = createElementByTagName("DIV");
     checkBoxDiv.className = "checkBox";
-    var checkBox = document.createElement("INPUT");
+    var checkBox = createElementByTagName("INPUT");
     checkBox.type = "checkbox";
     checkBox.id = "stepId" + step.id;
     checkBox.name = step.id;
-    addEventListener(checkBox, "change", changeOperationForStepCheckBox);
-    var label = document.createElement("LABEL");
+    addEventListener(checkBox, "change", eventOperationForStepCheckBox);
+    var label = createElementByTagName("LABEL");
     label.htmlFor = "stepId" + step.id;
-    checkBoxDiv.appendChild(checkBox);
-    checkBoxDiv.appendChild(label);
-    if(step.isFinished) {
+    appendParentAndChild(checkBoxDiv, checkBox);
+    appendParentAndChild(checkBoxDiv, label);
+    if (step.isFinished) {
         checkBox.checked = true;
     } else {
         checkBox.checked = false;
@@ -384,23 +432,24 @@ function getCheckBoxDivWithCheckBox(step) {
 }
 
 /**
- * 
+ * Returns Step inner div in page.
  */
 function getStepInnerDiv() {
-    var divElement = createElementByString("DIV");
+    var divElement = createElementByTagName("DIV");
     divElement.className = "stepTitle";
     return divElement;
 }
 
 /**
+ * Returns Span element with step name.
  * 
- * @param {*} step 
+ * @param {Object} step - Object used to set name in that span element.
  */
 function getStepSpanWithName(step) {
-    let spanElement = createElementByString("SPAN");
-    let textElement = document.createTextNode(step.name);
-    spanElement.appendChild(textElement);
-    if(step.isFinished) {
+    let spanElement = createElementByTagName("SPAN");
+    let textElement = createTextNode(step.name);
+    appendParentAndChild(spanElement, textElement);
+    if (step.isFinished) {
         spanElement.className = "finished";
     } else {
         spanElement.classList.remove("finished");
@@ -409,21 +458,22 @@ function getStepSpanWithName(step) {
 }
 
 /**
+ * Return Span element with deletion icon.
  * 
- * @param {*} step 
+ * @param {Object} step - Object used to set ID attribute in that span element.
  */
 function getSpanForDeletion(step) {
-    let spanElementForDeletion = createElementByString("SPAN");
+    let spanElementForDeletion = createElementByTagName("SPAN");
     spanElementForDeletion.className = "deletion";
     spanElementForDeletion.id = step.id;
     addEventListener(spanElementForDeletion, "click", stepDeletionOperation)
     let textElementForDeletion = document.createTextNode("x");
-    spanElementForDeletion.appendChild(textElementForDeletion);
+    appendParentAndChild(spanElementForDeletion, textElementForDeletion);
     return spanElementForDeletion;
 }
 
 /**
- * 
+ * Loads Steps in page.
  */
 function loadSteps() {
     var taskTitle = getElementById("taskName");
@@ -432,35 +482,38 @@ function loadSteps() {
     var stepContainer = getElementById("stepsContainer");
     setElementAsEmpty(stepContainer);
     var undeletedSteps = getUndeletedObjects(activeTask.steps);
-    for (stepIndex in undeletedSteps) {
+    for (let stepIndex in undeletedSteps) {
         let step = undeletedSteps[stepIndex];
         let divElement = getStepDiv();
         let checkBoxDiv = getCheckBoxDivWithCheckBox(step);
-        divElement.appendChild(checkBoxDiv);
+        appendParentAndChild(divElement, checkBoxDiv);
         let innerDivElement = getStepInnerDiv();
         let spanElement = getStepSpanWithName(step);
         let spanElementForDeletion = getSpanForDeletion(step);
-        innerDivElement.appendChild(spanElement);
-        innerDivElement.appendChild(spanElementForDeletion);
-        divElement.appendChild(innerDivElement);
-        stepContainer.appendChild(divElement);
-    }
-}
-
-function sidePanelOperation() {
-    if ("50px" == getElementById("sideMenu").style.width) {
-        openLeftPanel();
-    } else {
-        closeLeftPanel();
+        appendParentAndChild(innerDivElement, spanElement);
+        appendParentAndChild(innerDivElement, spanElementForDeletion);
+        appendParentAndChild(divElement, innerDivElement);
+        appendParentAndChild(stepContainer, divElement);
     }
 }
 
 /**
- * 
- * @param {*} event 
+ * Toggles Open and close left panel operation.
  */
-function stepDeletionOperation(event) {
-    if(confirm("Are you sure want to delete step")) {
+function sidePanelOperation() {
+    var sideMenu = getElementById("sideMenu");
+    if("leftPanelContainer" == sideMenu.className) {
+        closeLeftPanel(sideMenu);
+    } else {
+        openLeftPanel(sideMenu);
+    }
+}
+
+/**
+ * Soft Deletes step.
+ */
+function stepDeletionOperation() {
+    if (confirm("Are you sure want to delete step")) {
         var stepId = event.target.id;
         var step = activeTask.steps.find(step => step.id === stepId);
         step.status = false;
@@ -469,29 +522,38 @@ function stepDeletionOperation(event) {
     }
 }
 
-function closeLeftPanel() {
-    document.getElementById("sideMenu").style.width = "50";
-    document.getElementById("listInput").style.display = "none";
+/**
+ * Closes Left Panel.
+ * 
+ * @param {*} sideMenu 
+ */
+function closeLeftPanel(sideMenu) {
+    sideMenu.classList.replace("leftPanelContainer", "closeLeftPanelContainer");
+    getElementById("listInput").classList.add("displayNone");
     var leftPanelTitle = document.getElementsByClassName("leftPanelTitle");
-    for (let i = 0; i < leftPanelTitle.length; i++) {
-        leftPanelTitle[i].style.display = "none";
-    }
-}
-
-function openLeftPanel() {
-    document.getElementById("sideMenu").style.width = "290";
-    document.getElementById("listInput").style.display = "inline-block";
-    var leftPanelTitle = document.getElementsByClassName("leftPanelTitle");
-    for (let i = 0; i < leftPanelTitle.length; i++) {
-        leftPanelTitle[i].style.display = "inline-block";
-    }
+    [...leftPanelTitle].forEach ( element => {
+        element.classList.replace("leftPanelTitle", "displayNone");
+    });
 }
 
 /**
+ * Opens Left Panel.
  * 
- * @param {*} event 
+ * @param {HTMLElement} sideMenu 
  */
-function listInputOperation(event) {
+function openLeftPanel(sideMenu) {
+    sideMenu.classList.replace("closeLeftPanelContainer", "leftPanelContainer");
+    getElementById("listInput").classList.remove("displayNone");
+    var leftPanelTitle = document.getElementsByClassName("displayNone");
+    [...leftPanelTitle].forEach ( element => {
+        element.classList.replace("displayNone", "leftPanelTitle");
+    });
+}
+
+/**
+ * Checks whether pressed key is "ENTER" when create list.
+ */
+function listInputOperation() {
     if (this.value != "") {
         if (event.keyCode == 13) {
             createList(listInput);
@@ -500,8 +562,9 @@ function listInputOperation(event) {
 }
 
 /**
+ * Creates list object from listInput.
  * 
- * @param {*} listInput 
+ * @param {string} listInput - String that specifies list input value.
  */
 function createList(listInput) {
     var list = new Object();
@@ -518,10 +581,9 @@ function createList(listInput) {
 }
 
 /**
- * 
- * @param {*} event 
+ * Checks whether pressed key is "ENTER" when create task.
  */
-function taskInputOperation(event) {
+function taskInputOperation() {
     if (this.value != "") {
         if (event.keyCode == 13) {
             createTask(taskInput);
@@ -530,10 +592,9 @@ function taskInputOperation(event) {
 }
 
 /**
- * 
- * @param {*} event 
+ * Checks whether pressed key is "ENTER" when create step.
  */
-function stepInputBoxOperation(event) {
+function stepInputBoxOperation() {
     if (this.value != "") {
         if (event.keyCode == 13) {
             createStep(stepInput);
@@ -542,8 +603,9 @@ function stepInputBoxOperation(event) {
 }
 
 /**
+ * Creates task object from taskInput.
  * 
- * @param {*} taskInput 
+ * @param {string} taskInput - String that specifies task input value.
  */
 function createTask(taskInput) {
     var task = new Object();
@@ -557,8 +619,9 @@ function createTask(taskInput) {
 }
 
 /**
+ * Creates task object from stepInput.
  * 
- * @param {*} stepInput 
+ * @param {string} stepInput - String that specifies task input value.
  */
 function createStep(stepInput) {
     var step = new Object();
@@ -573,37 +636,36 @@ function createStep(stepInput) {
 }
 
 /**
- * 
- * @param {*} event 
+ * Shows right panel with clicked task details.
  */
 function taskClickOperation(event) {
-    if(event.target.tagName === 'INPUT') {
+    if (event.target.tagName === 'INPUT') {
         var activeTaskId = event.target.name;
     } else {
         var activeTaskId = event.target.id;
     }
-    activeTask = activeList.tasks.find(task=>task.id === activeTaskId);
-    if(typeof activeTask !== 'undefined') {
+    activeTask = activeList.tasks.find(task => task.id === activeTaskId);
+    if (typeof activeTask !== 'undefined') {
         getElementById("taskDetails").style.display = "block";//TODO
         loadSteps();
     }
 }
 
 /**
- * 
+ * Hide right panel.
  */
 function listOperation() {
-    activeList = collectionOfList.find(list=>list.id === event.target.id);
+    activeList = collectionOfList.find(list => list.id === event.target.id);
     getElementById("taskDetails").style.display = "none";//TODO
     loadTasks();
 }
 
 /**
- * Creates UUID()
+ * Creates UUID to set ID attribute to object.
  */
 function create_UUID() {
     var dt = new Date().getTime();
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = (dt + Math.random() * 16) % 16 | 0;
         dt = Math.floor(dt / 16);
         return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
