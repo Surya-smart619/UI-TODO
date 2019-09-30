@@ -7,7 +7,7 @@ var activeTask;
 init();
 
 function init() {
-    bindEvent(getElement("sideBarButton"), "click", sidePanelOperation);
+    addEventListener(getElementById("sideBarButton"), "click", sidePanelOperation);
     addEventListener(getElementById("trashListIcon"), "click", deleteOperationForList);
     addEventListener(getElementById("checkbox"), "change", toggleOperationForSteps);
     addEventListener(getElementById("stepInput"), "keydown", stepInputBoxOperation);
@@ -23,10 +23,6 @@ function init() {
  * @param {function}    functionName - Specifies Name of the function.
  */
 function addEventListener(element, event, functionName) {
-    element.addEventListener(event, functionName);
-}
-
-function bindEvent(element, event, functionName) {
     element.bind(event, functionName);
 }
 
@@ -40,16 +36,15 @@ function appendParentAndChild(parentElement, childElement) {
     parentElement.appendChild(childElement);
 }
 
+function appendParentAndChild(parentElement, childElement) {
+    parentElement.append(childElement);
+}
 /**
  * Returns a reference to the first object with the specified value of the ID attribute.
  * 
  * @param {string} elementId - String that specifies the ID value.
  */
 function getElementById(elementId) {
-    return $("#" + elementId)[0];
-}
-
-function getElement(elementId) {
     return $("#" + elementId);
 }
 
@@ -59,7 +54,7 @@ function getElement(elementId) {
  * @param {string} tagName - Specifies tag name value used to create element. 
  */
 function createElementByTagName(tagName) {
-    return document.createElement(tagName);
+    return $("<" + tagName + "></" + tagName + ">");
 }
 
 /**
@@ -77,7 +72,7 @@ function createTextNode(text) {
  * @param {HTMLElement} element - Specifies HTML Element.
  */
 function setElementAsEmpty(element) {
-    element.innerHTML = "";
+    element.html("");
 }
 
 /**
@@ -109,8 +104,8 @@ function getListDiv(list) {
  * @param {string}      className  - String that specifies class name.
  */
 function assignIdAndClassName(element, id, className) {
-    element.id = id;
-    element.className = className;
+    element.attr("id", id);
+    element.attr("class", className);
 }
 
 /**
@@ -167,8 +162,8 @@ function setUnfinishedTaskCountInDiv(list, div) {
     var unFinishedTasksLength = getUnfinishedObjectFromArray(list.tasks).length;
     if (unFinishedTasksLength > 0) {
         var spanElementForTaskCount = createElementByTagName("SPAN");
-        spanElementForTaskCount.id = list.id;
-        spanElementForTaskCount.className = "taskCount";
+        spanElementForTaskCount.attr("id", list.id);
+        spanElementForTaskCount.attr("class", "taskCount");
         var CountTextElement = document.createTextNode(unFinishedTasksLength);
         appendParentAndChild(spanElementForTaskCount, CountTextElement);
         appendParentAndChild(div, spanElementForTaskCount);
@@ -181,6 +176,7 @@ function setUnfinishedTaskCountInDiv(list, div) {
 function loadLists() {
     var listContainer = getElementById("sideList");
     setElementAsEmpty(listContainer);
+    setActiveListName();
     var unDeletedList = getUndeletedObjects(collectionOfList);
     for (let listIndex in unDeletedList) {
         let list = unDeletedList[listIndex];
@@ -219,11 +215,11 @@ function deleteOperationForList() {
  */
 function setActiveListName() {
     if (activeList.status === true) {
-        document.getElementById("displayListTitle").innerHTML = activeList.name;
+        getElementById("displayListTitle").html(activeList.name);
     } else { //TODO change default list as "Task"
-        getElementById("displayListTitle").innerHTML = "Tasks";
+        getElementById("displayListTitle").html("Tasks");
         activeList = "";
-        getElementById("taskDetails").classList.add("displayNone");
+        getElementById("taskDetails").addClass("displayNone");
         /*var previousListIndex = collectionOfList.findIndex(getIndexOfList) - 1;
         activeList = collectionOfList[previousListIndex];
         document.getElementById("displayListTitle").innerHTML = activeList.name;*/
@@ -249,15 +245,15 @@ function getTaskDiv(task) {
  */
 function getTaskCheckBox(task) {
     var checkBoxDiv = createElementByTagName("DIV");
-    checkBoxDiv.className = "checkBox";
-    var checkBox = document.createElement("INPUT");
-    checkBox.type = "checkbox";
-    checkBox.name = task.id;
+    checkBoxDiv.attr("class", "checkBox");
+    var checkBox = createElementByTagName("INPUT");
+    checkBox.attr("type", "checkbox");
+    checkBox.attr("name", task.id);
     assignIdAndClassName(checkBox, "taskCheckBox" + task.id, "checkbox");
     toggleCheckboxCheckedProperty(task, checkBox);
     addEventListener(checkBox, "change", eventOperationForTaskCheckBox);
-    var label = document.createElement("LABEL");
-    label.htmlFor = "taskCheckBox" + task.id;
+    var label = createElementByTagName("LABEL");
+    label.attr("for", "taskCheckBox" + task.id);
     appendParentAndChild(checkBoxDiv, checkBox);
     appendParentAndChild(checkBoxDiv, label);
     return checkBoxDiv;
@@ -271,9 +267,9 @@ function getTaskCheckBox(task) {
  */
 function toggleCheckboxCheckedProperty(task, checkBox) {
     if (task.isFinished) {
-        checkBox.checked = true;
+        checkBox.attr("checked", true);
     } else {
-        checkBox.checked = false;
+        checkBox.attr("checked", false);
     }
 }
 
@@ -284,8 +280,7 @@ function toggleCheckboxCheckedProperty(task, checkBox) {
  */
 function getTaskInnerDiv(task) {
     var divElement = createElementByTagName("DIV");
-    divElement.className = "taskTitle";
-    divElement.id = task.id;
+    assignIdAndClassName(divElement, task.id, "taskTitle");
     return divElement;
 }
 
@@ -297,9 +292,9 @@ function getTaskInnerDiv(task) {
  */
 function toggleSpanClassNameByTask(task, spanElement) {
     if (task.isFinished) {
-        spanElement.classList.add("finished");
+        spanElement.addClass("finished");
     } else {
-        spanElement.classList.remove("finished");
+        spanElement.removeClass("finished");
     }
 }
 
@@ -325,7 +320,7 @@ function setStepsCountInDiv(task, div) {
  */
 function loadTasks() {
     setActiveListName();
-    var taskContainer = document.getElementById("tasksContainer");
+    var taskContainer = getElementById("tasksContainer");
     setElementAsEmpty(taskContainer);
     for (let taskIndex in activeList.tasks) {
         let task = activeList.tasks[taskIndex];
@@ -397,11 +392,11 @@ function eventOperationForStepCheckBox() {
  */
 function toggleTaskTitle(taskTitle) {
     if (activeTask.isFinished) {
-        taskTitle.className = "finished";
-        getElementById("checkbox").checked = true;
+        taskTitle.addClass("finished");
+        getElementById("checkbox").prop("checked", true);
     } else {
-        taskTitle.classList.remove("finished");
-        getElementById("checkbox").checked = false;
+        taskTitle.removeClass("finished");
+        getElementById("checkbox").prop("checked", false);
     }
 }
 
@@ -410,7 +405,7 @@ function toggleTaskTitle(taskTitle) {
  */
 function getStepDiv() {
     var divElement = createElementByTagName("DIV");
-    divElement.className = "step";
+    divElement.addClass("step");
     return divElement;
 }
 
@@ -421,20 +416,20 @@ function getStepDiv() {
  */
 function getCheckBoxDivWithCheckBox(step) {
     var checkBoxDiv = createElementByTagName("DIV");
-    checkBoxDiv.className = "checkBox";
+    checkBoxDiv.attr("class", "checkBox");
     var checkBox = createElementByTagName("INPUT");
-    checkBox.type = "checkbox";
-    checkBox.id = "stepId" + step.id;
-    checkBox.name = step.id;
+    checkBox.attr("type", "checkbox");
+    checkBox.attr("id", "stepId" + step.id);
+    checkBox.attr("name", step.id);
     addEventListener(checkBox, "change", eventOperationForStepCheckBox);
     var label = createElementByTagName("LABEL");
-    label.htmlFor = "stepId" + step.id;
+    label.attr("for", "stepId" + step.id);
     appendParentAndChild(checkBoxDiv, checkBox);
     appendParentAndChild(checkBoxDiv, label);
     if (step.isFinished) {
-        checkBox.checked = true;
+        checkBox.attr("checked", true);
     } else {
-        checkBox.checked = false;
+        checkBox.attr("checked", false);
     }
     return checkBoxDiv;
 }
@@ -444,7 +439,7 @@ function getCheckBoxDivWithCheckBox(step) {
  */
 function getStepInnerDiv() {
     var divElement = createElementByTagName("DIV");
-    divElement.className = "stepTitle";
+    divElement.attr("class", "stepTitle");
     return divElement;
 }
 
@@ -458,9 +453,9 @@ function getStepSpanWithName(step) {
     let textElement = createTextNode(step.name);
     appendParentAndChild(spanElement, textElement);
     if (step.isFinished) {
-        spanElement.className = "finished";
+        spanElement.addClass("finished");
     } else {
-        spanElement.classList.remove("finished");
+        spanElement.removeClass("finished");
     }
     return spanElement;
 }
@@ -472,8 +467,8 @@ function getStepSpanWithName(step) {
  */
 function getSpanForDeletion(step) {
     let spanElementForDeletion = createElementByTagName("SPAN");
-    spanElementForDeletion.className = "deletion";
-    spanElementForDeletion.id = step.id;
+    spanElementForDeletion.attr("class", "deletion");
+    spanElementForDeletion.attr("id", step.id);
     addEventListener(spanElementForDeletion, "click", stepDeletionOperation)
     let textElementForDeletion = document.createTextNode("x");
     appendParentAndChild(spanElementForDeletion, textElementForDeletion);
@@ -485,7 +480,7 @@ function getSpanForDeletion(step) {
  */
 function loadSteps() {
     var taskTitle = getElementById("taskName");
-    taskTitle.innerHTML = activeTask.name;
+    taskTitle.html(activeTask.name);
     toggleTaskTitle(taskTitle);
     var stepContainer = getElementById("stepsContainer");
     setElementAsEmpty(stepContainer);
@@ -509,7 +504,7 @@ function loadSteps() {
  * Toggles Open and close left panel operation.
  */
 function sidePanelOperation() {
-    var sideMenu = getElement("sideMenu");
+    var sideMenu = getElementById("sideMenu");
     if("leftPanelContainer" == sideMenu.attr("class")) {
         closeLeftPanel(sideMenu);
     } else {
@@ -537,7 +532,7 @@ function stepDeletionOperation() {
  */
 function closeLeftPanel(sideMenu) {
     sideMenu.addClass("closeLeftPanelContainer").removeClass("leftPanelContainer");
-    getElement("listInput").addClass("displayNone");
+    getElementById("listInput").addClass("displayNone");
     var leftPanelTitle = document.getElementsByClassName("leftPanelTitle");
     [...leftPanelTitle].forEach ( element => {
         element.classList.replace("leftPanelTitle", "displayNone");
@@ -551,7 +546,7 @@ function closeLeftPanel(sideMenu) {
  */
 function openLeftPanel(sideMenu) {
     sideMenu.addClass("leftPanelContainer").removeClass("closeLeftPanelContainer");
-    getElement("listInput").removeClass("displayNone");
+    getElementById("listInput").removeClass("displayNone");
     var leftPanelTitle = document.getElementsByClassName("displayNone");
     [...leftPanelTitle].forEach ( element => {
         element.classList.replace("displayNone", "leftPanelTitle");
@@ -654,7 +649,7 @@ function taskClickOperation(event) {
     }
     activeTask = activeList.tasks.find(task => task.id === activeTaskId);
     if (typeof activeTask !== 'undefined') {
-        getElementById("taskDetails").style.display = "block";
+        getElementById("taskDetails").removeClass("displayNone");
         loadSteps();
     }
 }
@@ -664,7 +659,7 @@ function taskClickOperation(event) {
  */
 function listOperation() {
     activeList = collectionOfList.find(list => list.id === event.target.id);
-    getElementById("taskDetails").style.display = "none";
+    getElementById("taskDetails").addClass("displayNone");
     loadTasks();
 }
 
