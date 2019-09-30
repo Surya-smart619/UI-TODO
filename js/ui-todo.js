@@ -7,7 +7,7 @@ var activeTask;
 init();
 
 function init() {
-    addEventListener(getElementById("sideBarButton"), "click", sidePanelOperation);
+    bindEvent(getElement("sideBarButton"), "click", sidePanelOperation);
     addEventListener(getElementById("trashListIcon"), "click", deleteOperationForList);
     addEventListener(getElementById("checkbox"), "change", toggleOperationForSteps);
     addEventListener(getElementById("stepInput"), "keydown", stepInputBoxOperation);
@@ -26,6 +26,10 @@ function addEventListener(element, event, functionName) {
     element.addEventListener(event, functionName);
 }
 
+function bindEvent(element, event, functionName) {
+    element.bind(event, functionName);
+}
+
 /**
  * Appends Child Element to Parent Element.
  * 
@@ -42,7 +46,11 @@ function appendParentAndChild(parentElement, childElement) {
  * @param {string} elementId - String that specifies the ID value.
  */
 function getElementById(elementId) {
-    return document.getElementById(elementId);
+    return $("#" + elementId)[0];
+}
+
+function getElement(elementId) {
+    return $("#" + elementId);
 }
 
 /**
@@ -501,8 +509,8 @@ function loadSteps() {
  * Toggles Open and close left panel operation.
  */
 function sidePanelOperation() {
-    var sideMenu = getElementById("sideMenu");
-    if("leftPanelContainer" == sideMenu.className) {
+    var sideMenu = getElement("sideMenu");
+    if("leftPanelContainer" == sideMenu.attr("class")) {
         closeLeftPanel(sideMenu);
     } else {
         openLeftPanel(sideMenu);
@@ -525,11 +533,11 @@ function stepDeletionOperation() {
 /**
  * Closes Left Panel.
  * 
- * @param {*} sideMenu 
+ * @param {JQuery} sideMenu 
  */
 function closeLeftPanel(sideMenu) {
-    sideMenu.classList.replace("leftPanelContainer", "closeLeftPanelContainer");
-    getElementById("listInput").classList.add("displayNone");
+    sideMenu.addClass("closeLeftPanelContainer").removeClass("leftPanelContainer");
+    getElement("listInput").addClass("displayNone");
     var leftPanelTitle = document.getElementsByClassName("leftPanelTitle");
     [...leftPanelTitle].forEach ( element => {
         element.classList.replace("leftPanelTitle", "displayNone");
@@ -542,8 +550,8 @@ function closeLeftPanel(sideMenu) {
  * @param {HTMLElement} sideMenu 
  */
 function openLeftPanel(sideMenu) {
-    sideMenu.classList.replace("closeLeftPanelContainer", "leftPanelContainer");
-    getElementById("listInput").classList.remove("displayNone");
+    sideMenu.addClass("leftPanelContainer").removeClass("closeLeftPanelContainer");
+    getElement("listInput").removeClass("displayNone");
     var leftPanelTitle = document.getElementsByClassName("displayNone");
     [...leftPanelTitle].forEach ( element => {
         element.classList.replace("displayNone", "leftPanelTitle");
@@ -646,7 +654,7 @@ function taskClickOperation(event) {
     }
     activeTask = activeList.tasks.find(task => task.id === activeTaskId);
     if (typeof activeTask !== 'undefined') {
-        getElementById("taskDetails").style.display = "block";//TODO
+        getElementById("taskDetails").style.display = "block";
         loadSteps();
     }
 }
@@ -656,7 +664,7 @@ function taskClickOperation(event) {
  */
 function listOperation() {
     activeList = collectionOfList.find(list => list.id === event.target.id);
-    getElementById("taskDetails").style.display = "none";//TODO
+    getElementById("taskDetails").style.display = "none";
     loadTasks();
 }
 
