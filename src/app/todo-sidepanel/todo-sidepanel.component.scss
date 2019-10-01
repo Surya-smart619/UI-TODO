@@ -1,0 +1,47 @@
+.leftPanel {
+	/* height: 93.6%; */
+	display: inline-block;
+	position: relative;
+}
+
+.leftPanel button {
+	cursor: pointer;
+	padding: 4px;
+	width: 32px;
+	height: 32px;
+	border: none;
+	background: transparent;
+}
+
+.leftPanelMenu {
+	height: 48px;
+	margin-top: 12px;
+}
+
+.leftPanelContainer {
+	padding-top: 8px;
+    width: 290px;
+	transition: width 0.3s;
+}
+
+.leftPanelContent {
+	height: 36px;
+	padding: 0px 12px;
+	color: #34373d;
+	font-size: 1.4rem;
+	cursor: pointer;
+	background-color: rgb(244, 244, 244);
+	display:  flex;
+}
+
+.leftPanelTitle {
+	margin: 0 8px;
+	display: flex;
+	width: 100%;
+}
+
+#listInput {
+	padding: 6px;
+	border: none;
+	width: auto;
+}

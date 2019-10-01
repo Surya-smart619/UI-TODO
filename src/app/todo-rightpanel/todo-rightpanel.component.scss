@@ -1,0 +1,122 @@
+.taskDetails {
+	border-left: 1px solid #eaeaea;
+	height: 100%;
+	background: #f5f5f5;
+}
+
+.taskDetailsContainer {
+	padding: 10px 10px 16px 10px;
+	background-color: rgb(245, 245, 245);
+	width: 355px;
+	display: flex;
+	flex-basis: 1r;
+	flex-direction: column;
+}
+
+.taskDetailsContent {
+	background-color: rgb(255, 255, 255);
+	border: 1px solid rgb(229, 229, 229);
+}
+
+.taskTitleInRightPanel {
+	font-size: 1.4rem;
+	font-weight: 500;
+	color: #34373d;
+	padding: 7px 39px;
+	vertical-align: middle;
+	line-height: 40px;
+	margin-top: -16px;
+	margin-left: 39px;
+}
+
+#stepsContainer {
+	padding: 0px 12px;
+	display: flex;
+	cursor: pointer;
+	flex-direction: column;
+}
+
+.addStep {
+	display: flex;
+}
+
+.addStep input[type=text] {
+	padding: 6px;
+	border: none;
+	width: 100%;
+	display: inline-block;
+}
+
+.addStep button {
+	width: 32px;
+	height: 32px;
+	padding: 4px;
+	cursor: pointer;
+	border: none;
+	background: transparent;
+	margin-top: 11px;
+}
+
+.addMyDay {
+	display: flex;
+	margin: 10px 0px 10px 0px;
+	background-color: rgb(255, 255, 255);
+	border: 1px solid rgb(229, 229, 229);
+	padding: 13px 6px;
+}
+
+.rightContainerAddMyDay {
+	padding: 4px 0;
+	font-size: 1.4rem;
+	color: #767678;
+	margin: 0 8px;
+	display: flex;
+}
+
+.rightPanelContent {
+	margin: 10px 0px;
+}
+
+.rightContainer {
+	padding: 4px 0;
+	font-size: 1.4rem;
+	color: #767678;
+	background-color: rgb(255, 255, 255);
+	border: 1px solid rgb(229, 229, 229);
+}
+
+.rightSubContainer {
+	display: flex;
+	padding: 0 12px;
+	margin-top: 36px;
+}
+
+.rightSubContainerTitle {
+	border-bottom: 1px solid rgb(229, 229, 229);
+	width: 100%;
+}
+
+.addFile {
+	display: flex;
+	background-color: rgb(255, 255, 255);
+	border: 1px solid rgb(229, 229, 229);
+	color: #767678;
+}
+
+.taskTitle {
+	font-size: 1.4rem;
+	font-weight: 500;
+	color: #34373d;
+	padding: 0px 12px;
+	vertical-align: middle;
+	line-height: 54px;
+	/* position:  absolute; */
+	display: flex;
+	flex-direction: column;
+	/* margin-top: -16px; */
+	/* height: 28px; */
+}
+
+.taskTitle span {
+	padding-left: 11px;
+}

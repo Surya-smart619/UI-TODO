@@ -1,1 +1,62 @@
 /* You can add global styles to this file, and also import other style files */
+.fa-home, .fa-bars, .fa-list, .fa-plus {
+	color: rgb(97, 119, 230);
+}
+
+input, button {
+	outline: none;
+}
+
+::placeholder {
+	color: #2e5cdb;
+}
+
+input:focus::-webkit-input-placeholder {
+	color: #34373d;
+}
+
+.displayNone {
+	display: none;
+}
+
+.checkBox {
+	position: relative;
+}
+
+.checkBox label {
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	cursor: pointer;
+	height: 24px;
+	left: 0;
+	position: absolute;
+	width: 24px;
+	margin-top: 15px;
+	}
+
+.checkBox input[type="checkbox"] {
+    visibility: hidden;
+}
+
+.checkBox input[type="checkbox"]:checked + label {
+ 	background-color: rgb(62, 105, 228);
+	border-color: rgb(62, 105, 228);
+}
+
+.checkBox label:after {
+	border: 2px solid #fff;
+	border-top: none;
+	border-right: none;
+	content: "";
+	height: 4px;
+	left: 6px;
+	position: absolute;
+	top: 8px;
+	transform: rotate(-45deg);
+	width: 12px;
+  }
+
+.bold {
+	font-weight: 600;
+}
