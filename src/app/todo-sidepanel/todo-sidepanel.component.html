@@ -1,52 +1,54 @@
 <div class = "leftPanel">
     <div class = "leftPanelMenu">
-        <button id = "sideBarButton" #sideBarButton (click) = "sidePanelOperation(sideBarButton)">
+        <button id = "sideBarButton" (click) = "sidePanelToggleOperation()">
             <i class = "fa fa-bars"></i>
         </button>
     </div>
-    <div id = "sideMenu" class = "leftPanelContainer">
+    <div id = "sideMenu" [ngClass] = "isSideMenuOpened ? 'leftPanelContainer' : 'closeLeftPanelContainer'">
         <div class = "leftPanelContent">
             <i class = "fa fa-sun-o"></i>
-            <div class = "leftPanelTitle">
+            <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle' : 'displayNone'">
                <span>My Day</span>
             </div>
         </div>
         <div class = "leftPanelContent">
             <i class = "fa fa-star"></i>
-            <div class = "leftPanelTitle">
+            <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle' : 'displayNone'">
                 <span>Important</span>
             </div>
         </div>
         <div class = "leftPanelContent">
             <i class = "fa fa-calendar"></i>
-            <div class = "leftPanelTitle">
+            <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle' : 'displayNone'">
                <span>Planned</span>
             </div>
         </div>
         <div class = "leftPanelContent">
             <i class = "fa fa-user"></i>
-            <div class = "leftPanelTitle">
+            <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle' : 'displayNone'">
                <span>Assigned to Me</span>
             </div>
         </div>
         <div class = "leftPanelContent">
             <i class = "fa fa-home"></i>
-            <div class = "leftPanelTitle">
+            <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle' : 'displayNone'">
                <span>Tasks</span>
             </div>
         </div>
         <div id = "sideList">
-            <div class = "leftPanelContent" *ngFor = "let list of toDoLists">
+            <div class = "leftPanelContent" *ngFor = "let list of toDoLists" (click) = "activateList(list)">
                 <i class = "fa fa-list"></i>
-                <div class = "leftPanelTitle blue bold">
+                <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle blue bold' : 'displayNone'">
                     <span>{{list.name}}</span>
+                    <span class = "taskCount" *ngIf = "list.tasks.length > 0">{{list.tasks.length}}</span>
                 </div>
             </div>
         </div>
     </div>
     <div class = "leftPanelContent listInput">
-        <label><i class = "fa fa-plus"></i>
-            <input id = "listInput" #listInput (keydown.enter) = "listInputOperation(listInput)" type = "text" placeholder = "New list"/>
+        <label (click) = "openSideMenu()"><i class = "fa fa-plus"></i>
+            <input [ngClass] = "isSideMenuOpened ? '' : 'displayNone'" id = "listInput" type = "text"
+                    #listInput (keydown.enter) = "createListByName(listInput)" placeholder = "New list"/>
         </label>
     </div>
 </div>

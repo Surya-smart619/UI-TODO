@@ -11,6 +11,6 @@ export class ListService {
     list: List;
 
     createList(listInput: { value: string; }) {
-        return this.list = {id: uuid(), name: listInput.value, status: true, tasks: []};
+        return this.list = {id: uuid(), name: listInput.value, tasks: []};
     }
 }

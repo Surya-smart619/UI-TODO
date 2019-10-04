@@ -1,6 +1,7 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { List } from '../list';
 import { ListService } from '../list.service';
+import { DataService } from '../data.service';
 
 @Component({
     selector: 'app-todo-sidepanel',
@@ -10,41 +11,34 @@ import { ListService } from '../list.service';
 export class TodoSidepanelComponent implements OnInit {
     list: List;
     toDoLists: List[] = [];
-    constructor(private listService: ListService) { }
-
+    isSideMenuOpened = true;
+    activeList: List;
+    constructor(private listService: ListService, private dataService: DataService) { }
     ngOnInit() {
+        this.dataService.activeList.subscribe(list => this.activeList = list);
     }
 
-    listInputOperation(listInput: { value: string; }) {
-        this.toDoLists.push(this.listService.createList(listInput));
+    createListByName(listInput: { value: string; }) {
+        const createdList = this.listService.createList(listInput);
+        this.toDoLists.push(createdList);
+        this.activateList(createdList);
         listInput.value = '';
     }
 
-    sidePanelOperation(sideBarButton: any) {
-        console.log(sideBarButton);
-        /*var sideMenu = getElementById("sideMenu");
-        if("leftPanelContainer" == sideMenu.attr("class")) {
-            closeLeftPanel(sideMenu);
-        } else {
-            openLeftPanel(sideMenu);
-        }*/
+    sidePanelToggleOperation() {
+        this.isSideMenuOpened = !this.isSideMenuOpened;
     }
 
-    /* closeLeftPanel(sideMenu) {
-        sideMenu.addClass("closeLeftPanelContainer").removeClass("leftPanelContainer");
-        getElementById("listInput").addClass("displayNone");
-        var leftPanelTitle = document.getElementsByClassName("leftPanelTitle");
-        [...leftPanelTitle].forEach ( element => {
-            element.classList.replace("leftPanelTitle", "displayNone");
-        });
+    openSideMenu() {
+        this.isSideMenuOpened = true;
     }
 
-    openLeftPanel(sideMenu) {
-        sideMenu.addClass("leftPanelContainer").removeClass("closeLeftPanelContainer");
-        getElementById("listInput").removeClass("displayNone");
-        var leftPanelTitle = document.getElementsByClassName("displayNone");
-        [...leftPanelTitle].forEach ( element => {
-            element.classList.replace("displayNone", "leftPanelTitle");
-        });
-    }*/
+    activateList(list) {
+        this.dataService.changeActiveList(list);
+        this.closeTaskDetails();
+    }
+
+    closeTaskDetails() {
+        this.dataService.toggleTaskDetail(false);
+    }
 }

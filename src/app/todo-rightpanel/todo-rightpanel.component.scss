@@ -120,3 +120,25 @@
 .taskTitle span {
 	padding-left: 11px;
 }
+
+.stepTitle {
+	border-bottom: 1px solid rgb(229, 229, 229);
+	font-size: 1.4rem;
+	line-height: 1.8rem;
+	font-weight: 500;
+	padding: 10px 37px;
+	margin-top: -11px;
+}
+
+.deletion {
+	float: right;
+}
+
+.taskHeaderContainer {
+	padding: 12px 16px 0px 16px;
+}
+
+.taskHeader {
+	padding: 6px 8px;
+	display: inline-block;
+}
