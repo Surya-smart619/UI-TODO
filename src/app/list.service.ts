@@ -10,7 +10,13 @@ export class ListService {
     constructor() { }
     list: List;
 
-    createList(listInput: { value: string; }) {
-        return this.list = {id: uuid(), name: listInput.value, tasks: []};
+    createList(listInput: string) {
+        return this.list = {id: uuid(), name: listInput, tasks: []};
+    }
+
+
+    deleteList(toDoList: List[], targetList: List) {
+        const indexOfList = toDoList.indexOf(targetList);
+        toDoList.splice(indexOfList, 1);
     }
 }

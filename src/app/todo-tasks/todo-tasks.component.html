@@ -1,4 +1,4 @@
-<div class = "toDoList">
+<div class = "toDoList" oncontextmenu = "return false;">
     <div class = "taskHeaderContainer">
         <div class = "taskHeader">
             <h2 class = "listTitle">
@@ -6,10 +6,10 @@
             </h2>
             <!-- button class = "optionButton">...</button> -->
         </div>
-        <span id = "trashListIcon"><i class="fa fa-trash-o"></i></span>
     </div>
     <div id = "tasksContainer">
-        <div class = "tasks" *ngFor = "let task of activeList.tasks" (click) = "activateTask(task)">
+        <div class = "tasks" *ngFor = "let task of activeList.tasks" (click) = "activateTask(task)"
+                (contextmenu) = "showTaskContextMenu($event, task)">
             <div class = "checkBox">
                 <input id = "{{task.id}}" type = "checkbox" class = "checkbox"
                         (click) = "toggleTaskFinished(task)" [checked]="task.isFinished ? 'checked' : null"/>
@@ -30,4 +30,11 @@
     <hr>
     </div>
     <div class = "lines"></div>
+</div>
+<div *ngIf = "contextTaskMenu" class = "contextMenuStyle" [ngStyle]="{'left.px': contextMenuX, 'top.px': contextMenuY}"
+        (click) = "deleteTask($event)">
+    <div>
+        <span><i class="fa fa-trash-o"></i></span>
+        <span>Delete Task</span>
+    </div>
 </div>

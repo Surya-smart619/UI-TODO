@@ -22,7 +22,7 @@
                     </div>
                     <div class = "stepTitle">
                         <span [ngClass] = "step.isFinished ? 'finished' : ''">{{step.name}}</span>
-                        <span class = "deletion">x</span>
+                        <span class = "deletion" (click) = "deleteStep(step)">x</span>
                     </div>
                 </div>
             </div>

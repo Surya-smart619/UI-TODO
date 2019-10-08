@@ -10,17 +10,28 @@ import { DataService } from '../data.service';
 })
 export class TodoSidepanelComponent implements OnInit {
     list: List;
-    toDoLists: List[] = [];
+    toDoList: List[] = [];
+    defaultList: List;
     isSideMenuOpened = true;
     activeList: List;
+    contextMenuX = 0;
+    contextMenuY = 0;
+    contextListMenu = false;
+    targetList: List;
     constructor(private listService: ListService, private dataService: DataService) { }
     ngOnInit() {
         this.dataService.activeList.subscribe(list => this.activeList = list);
+        this.createDefaultList();
+    }
+
+    createDefaultList() {
+        this.defaultList = this.listService.createList('Tasks');
+        this.activateList(this.defaultList);
     }
 
     createListByName(listInput: { value: string; }) {
-        const createdList = this.listService.createList(listInput);
-        this.toDoLists.push(createdList);
+        const createdList = this.listService.createList(listInput.value);
+        this.toDoList.push(createdList);
         this.activateList(createdList);
         listInput.value = '';
     }
@@ -40,5 +51,27 @@ export class TodoSidepanelComponent implements OnInit {
 
     closeTaskDetails() {
         this.dataService.toggleTaskDetail(false);
+    }
+
+    changeDefaultListAsActive() {
+        this.activateList(this.defaultList);
+    }
+
+    showListContextMenu(event, list: List) {
+        this.contextMenuX = event.clientX;
+        this.contextMenuY = event.clientY;
+        this.contextListMenu = true;
+        this.targetList = list;
+    }
+
+    deleteList(event) {
+        if (confirm('Are you sure want to delete List ' + this.targetList.name)) {
+            this.listService.deleteList(this.toDoList, this.targetList);
+            this.disableListContextMenu();
+        }
+    }
+
+    disableListContextMenu() {
+        this.contextListMenu = false;
     }
 }

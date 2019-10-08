@@ -32,4 +32,10 @@ export class TodoRightpanelComponent implements OnInit {
     toggleActiveTaskFinished() {
         this.activeTask.isFinished = !this.activeTask.isFinished;
     }
+
+    deleteStep(step: Step) {
+        if (confirm('Are you sure want to delete Step ' + step.name)) {
+            this.stepService.deleteStep(this.activeTask, step);
+        }
+    }
 }

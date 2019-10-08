@@ -1,4 +1,4 @@
-<div class = "leftPanel">
+<div class = "leftPanel" (click) = "disableListContextMenu()">
     <div class = "leftPanelMenu">
         <button id = "sideBarButton" (click) = "sidePanelToggleOperation()">
             <i class = "fa fa-bars"></i>
@@ -29,14 +29,15 @@
                <span>Assigned to Me</span>
             </div>
         </div>
-        <div class = "leftPanelContent">
+        <div class = "leftPanelContent" (click) = "changeDefaultListAsActive()">
             <i class = "fa fa-home"></i>
             <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle' : 'displayNone'">
-               <span>Tasks</span>
+               <span>{{defaultList.name}}</span>
             </div>
         </div>
         <div id = "sideList">
-            <div class = "leftPanelContent" *ngFor = "let list of toDoLists" (click) = "activateList(list)">
+            <div class = "leftPanelContent" *ngFor = "let list of toDoList" (click) = "activateList(list)"
+                    (contextmenu) = "showListContextMenu($event, list)" oncontextmenu = "return false;">
                 <i class = "fa fa-list"></i>
                 <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle blue bold' : 'displayNone'">
                     <span>{{list.name}}</span>
@@ -50,5 +51,12 @@
             <input [ngClass] = "isSideMenuOpened ? '' : 'displayNone'" id = "listInput" type = "text"
                     #listInput (keydown.enter) = "createListByName(listInput)" placeholder = "New list"/>
         </label>
+    </div>
+</div>
+<div *ngIf = "contextListMenu" class = "contextMenuStyle" [ngStyle]="{'left.px': contextMenuX, 'top.px': contextMenuY}"
+        (click) = "deleteList($event)">
+    <div>
+        <span><i class="fa fa-trash-o"></i></span>
+        <span>Delete list</span>
     </div>
 </div>

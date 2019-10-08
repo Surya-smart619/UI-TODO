@@ -11,6 +11,10 @@ import { Task } from '../task';
 })
 export class TodoTasksComponent implements OnInit {
     activeList: List;
+    contextTaskMenu = false;
+    targetTask: Task;
+    contextMenuX: any;
+    contextMenuY: any;
 
     constructor(private taskService: TaskService, private dataService: DataService) { }
 
@@ -35,5 +39,23 @@ export class TodoTasksComponent implements OnInit {
 
     toggleTaskFinished(task: Task) {
         task.isFinished = !task.isFinished;
+    }
+
+    showTaskContextMenu(event, task: Task) {
+        this.contextMenuX = event.clientX;
+        this.contextMenuY = event.clientY;
+        this.contextTaskMenu = true;
+        this.targetTask = task;
+    }
+
+    deleteTask(event) {
+        if (confirm('Are you sure want to delete Task ' + this.targetTask.name)) {
+            this.taskService.deleteTask(this.activeList, this.targetTask);
+            this.disableTaskContextMenu();
+        }
+    }
+
+    disableTaskContextMenu() {
+        this.contextTaskMenu = false;
     }
 }

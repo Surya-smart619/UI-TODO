@@ -9,6 +9,7 @@ import { Task } from './task';
 export class DataService {
     list: List;
     task: Task;
+    toDoList: List[] = [];
     private listSource = new BehaviorSubject(this.list);
     private taskSource = new BehaviorSubject(this.task);
     private isTaskDetailSource = new BehaviorSubject(false);
