@@ -17,4 +17,8 @@ export class TaskService {
         const indexofTask = list.tasks.indexOf(targetTask);
         list.tasks.splice(indexofTask, 1);
     }
+
+    updateTask(activeTask: Task, updatedTaskName: string) {
+        activeTask.name = updatedTaskName;
+    }
 }

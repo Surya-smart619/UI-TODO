@@ -4,7 +4,7 @@
             <i class = "fa fa-bars"></i>
         </button>
     </div>
-    <div id = "sideMenu" [ngClass] = "isSideMenuOpened ? 'leftPanelContainer' : 'closeLeftPanelContainer'">
+    <div [ngClass] = "isSideMenuOpened ? 'leftPanelContainer' : 'closeLeftPanelContainer'">
         <div class = "leftPanelContent">
             <i class = "fa fa-sun-o"></i>
             <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle' : 'displayNone'">
@@ -41,7 +41,9 @@
                 <i class = "fa fa-list"></i>
                 <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle blue bold' : 'displayNone'">
                     <span>{{list.name}}</span>
-                    <span class = "taskCount" *ngIf = "list.tasks.length > 0">{{list.tasks.length}}</span>
+                    <span class = "taskCount" *ngIf = "list.tasks.length > 0">
+                        {{getUnfinishedTaskcount(list.tasks)}}
+                    </span>
                 </div>
             </div>
         </div>

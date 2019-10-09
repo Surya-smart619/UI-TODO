@@ -17,4 +17,8 @@ export class StepService {
         const indexOfStep = activeTask.steps.indexOf(step);
         activeTask.steps.splice(indexOfStep, 1);
     }
+
+    updateStep(updatedStepName: any, step: Step) {
+        step.name = updatedStepName;
+    }
 }

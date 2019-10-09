@@ -1,7 +1,5 @@
 .leftPanel {
-	/* height: 93.6%; */
 	display: inline-block;
-	position: relative;
 }
 
 .leftPanel button {
@@ -22,6 +20,8 @@
 	padding-top: 8px;
     width: 290px;
 	transition: width 0.3s;
+	max-height: 85.6%;
+	overflow-y: auto;
 }
 
 .leftPanelContent {
@@ -50,11 +50,4 @@
 	margin-left: auto;
 	color: #34373d;
 	font-weight: 400;
-}
-
-.contextMenuStyle {
-	width: 8%;
-	position: absolute;
-	background-color: rgb(255, 255, 255);
-	cursor: pointer;
 }

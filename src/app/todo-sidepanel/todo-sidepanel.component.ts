@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { List } from '../list';
 import { ListService } from '../list.service';
 import { DataService } from '../data.service';
+import { Task } from '../task';
 
 @Component({
     selector: 'app-todo-sidepanel',
@@ -30,10 +31,12 @@ export class TodoSidepanelComponent implements OnInit {
     }
 
     createListByName(listInput: { value: string; }) {
-        const createdList = this.listService.createList(listInput.value);
-        this.toDoList.push(createdList);
-        this.activateList(createdList);
-        listInput.value = '';
+        if (listInput.value !== '') {
+            const createdList = this.listService.createList(listInput.value);
+            this.toDoList.push(createdList);
+            this.activateList(createdList);
+            listInput.value = '';
+        }
     }
 
     sidePanelToggleOperation() {
@@ -67,11 +70,15 @@ export class TodoSidepanelComponent implements OnInit {
     deleteList(event) {
         if (confirm('Are you sure want to delete List ' + this.targetList.name)) {
             this.listService.deleteList(this.toDoList, this.targetList);
-            this.disableListContextMenu();
         }
+        this.disableListContextMenu();
     }
 
     disableListContextMenu() {
         this.contextListMenu = false;
+    }
+
+    getUnfinishedTaskcount(tasks: Task[]) {
+        return tasks.filter(task => task.isFinished === false).length;
     }
 }

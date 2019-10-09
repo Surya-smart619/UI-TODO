@@ -7,10 +7,9 @@
                             (click) = "toggleActiveTaskFinished()"/>
                     <label for="checkbox"></label>
                 </div>
-                <div class = "taskTitleInRightPanel bold">
-                    <span id = "taskName" [ngClass] = "activeTask.isFinished ? 'finished' : ''">
-                        {{activeTask.name}}
-                    </span>
+                <div>
+                    <input type = "text" value = "{{activeTask.name}}" class = "taskTitleInRightPanel bold" #listInput
+                            [ngClass] = "activeTask.isFinished ? 'finished' : ''" (keydown.enter) = "updateTask(listInput)"/>
                 </div>
             </div>
             <div id = "stepsContainer" *ngFor = "let step of activeTask.steps">
@@ -21,7 +20,8 @@
                         <label for = "{{step.id}}"></label>
                     </div>
                     <div class = "stepTitle">
-                        <span [ngClass] = "step.isFinished ? 'finished' : ''">{{step.name}}</span>
+                        <input #stepInput type = "text" [ngClass] = "step.isFinished ? 'finished' : ''" value = "{{step.name}}"
+                        (keydown.enter) = "updateStep(stepInput, step)"/>
                         <span class = "deletion" (click) = "deleteStep(step)">x</span>
                     </div>
                 </div>

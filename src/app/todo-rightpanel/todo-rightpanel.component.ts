@@ -3,6 +3,7 @@ import { StepService } from '../step.service';
 import { DataService } from '../data.service';
 import { Task } from '../task';
 import { Step } from '../step';
+import { TaskService } from '../task.service';
 
 @Component({
     selector: 'app-todo-rightpanel',
@@ -12,7 +13,7 @@ import { Step } from '../step';
 export class TodoRightpanelComponent implements OnInit {
     isTaskOpen = false;
     activeTask: Task;
-    constructor(private stepService: StepService, private dataService: DataService) { }
+    constructor(private taskService: TaskService, private stepService: StepService, private dataService: DataService) { }
 
     ngOnInit() {
         this.dataService.isTaskOpen.subscribe(isTaskOpen => this.isTaskOpen = isTaskOpen);
@@ -37,5 +38,15 @@ export class TodoRightpanelComponent implements OnInit {
         if (confirm('Are you sure want to delete Step ' + step.name)) {
             this.stepService.deleteStep(this.activeTask, step);
         }
+    }
+
+    updateStep(newListInput, step: Step) {
+        this.stepService.updateStep(newListInput.value, step);
+        newListInput.blur();
+    }
+
+    updateTask(taskInput) {
+        this.taskService.updateTask(this.activeTask, taskInput.value);
+        taskInput.blur();
     }
 }

@@ -3,6 +3,8 @@ import { TaskService } from '../task.service';
 import { DataService } from '../data.service';
 import { List } from '../list';
 import { Task } from '../task';
+import { Step } from '../step';
+import { ListService } from '../list.service';
 
 @Component({
     selector: 'app-todo-tasks',
@@ -16,16 +18,18 @@ export class TodoTasksComponent implements OnInit {
     contextMenuX: any;
     contextMenuY: any;
 
-    constructor(private taskService: TaskService, private dataService: DataService) { }
+    constructor(private listService: ListService, private taskService: TaskService, private dataService: DataService) { }
 
     ngOnInit() {
         this.dataService.activeList.subscribe(list => this.activeList = list);
     }
 
     createTaskByName(taskInput: { value: string; }) {
-        const task = this.taskService.createTask(taskInput);
-        this.activeList.tasks.push(task);
-        taskInput.value = '';
+        if (taskInput.value !== '') {
+            const task = this.taskService.createTask(taskInput);
+            this.activeList.tasks.push(task);
+            taskInput.value = '';
+        }
     }
 
     activateTask(task: Task) {
@@ -57,5 +61,14 @@ export class TodoTasksComponent implements OnInit {
 
     disableTaskContextMenu() {
         this.contextTaskMenu = false;
+    }
+
+    getFinishedStepsCount(steps: Step[]) {
+        return steps.filter(step => step.isFinished === true).length;
+    }
+
+    updateList(newListInput) {
+        this.listService.updateList(this.activeList, newListInput.value);
+        newListInput.blur();
     }
 }

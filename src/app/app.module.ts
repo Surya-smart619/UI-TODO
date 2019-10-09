@@ -14,7 +14,7 @@ import { TodoRightpanelComponent } from './todo-rightpanel/todo-rightpanel.compo
     TodoHeaderComponent,
     TodoSidepanelComponent,
     TodoTasksComponent,
-    TodoRightpanelComponent
+    TodoRightpanelComponent,
   ],
   imports: [
     BrowserModule,

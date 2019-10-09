@@ -27,6 +27,12 @@
 	line-height: 40px;
 	margin-top: -16px;
 	margin-left: 39px;
+	border: none;
+}
+
+.taskTitleInRightPanel:focus {
+	border: 1px solid black;
+	text-decoration: none;
 }
 
 #stepsContainer {
@@ -128,6 +134,15 @@
 	font-weight: 500;
 	padding: 10px 37px;
 	margin-top: -11px;
+}
+
+.stepTitle input {
+	border: none;
+}
+
+.stepTitle input:focus {
+	border: 1px solid black;
+	text-decoration: none;
 }
 
 .deletion {

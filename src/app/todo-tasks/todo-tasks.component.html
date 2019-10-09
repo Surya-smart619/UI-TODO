@@ -1,13 +1,13 @@
 <div class = "toDoList" oncontextmenu = "return false;">
     <div class = "taskHeaderContainer">
         <div class = "taskHeader">
-            <h2 class = "listTitle">
-                <span id = "displayListTitle">{{activeList.name}}</span>
+            <h2>
+                <input class = "listTitle" type = text value = "{{activeList.name}}"
+                        #updatedListinput (keydown.enter) = "updateList(updatedListinput)"/>
             </h2>
-            <!-- button class = "optionButton">...</button> -->
         </div>
     </div>
-    <div id = "tasksContainer">
+    <div class = "tasksContainer">
         <div class = "tasks" *ngFor = "let task of activeList.tasks" (click) = "activateTask(task)"
                 (contextmenu) = "showTaskContextMenu($event, task)">
             <div class = "checkBox">
@@ -16,7 +16,10 @@
                 <label for = "{{task.id}}"></label>
             </div>
             <div class = taskTitle>
-                <span [ngClass] = "task.isFinished ? 'finished' : ''">{{task.name}}</span>
+                <span class = "taskName" [ngClass] = "task.isFinished ? 'finished' : ''">{{task.name}}</span>
+                <span *ngIf = "task.steps.length > 0" class = "stepsCount">
+                    {{getFinishedStepsCount(task.steps)}} of {{task.steps.length}}
+                </span>
             </div>
         </div>
     </div>
