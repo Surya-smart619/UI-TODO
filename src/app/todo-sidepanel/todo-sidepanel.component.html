@@ -29,17 +29,17 @@
                <span>Assigned to Me</span>
             </div>
         </div>
-        <div class = "leftPanelContent" (click) = "changeDefaultListAsActive()">
+        <div appActiveList class = "leftPanelContent" (click) = "changeDefaultListAsActive()">
             <i class = "fa fa-home"></i>
             <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle' : 'displayNone'">
                <span>{{defaultList.name}}</span>
             </div>
         </div>
         <div id = "sideList">
-            <div class = "leftPanelContent" *ngFor = "let list of toDoList" (click) = "activateList(list)"
+            <div appActiveList class = "leftPanelContent" *ngFor = "let list of toDoList" (click) = "activateList(list)"
                     (contextmenu) = "showListContextMenu($event, list)" oncontextmenu = "return false;">
                 <i class = "fa fa-list"></i>
-                <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle blue bold' : 'displayNone'">
+                <div [ngClass] = "isSideMenuOpened ? 'leftPanelTitle' : 'displayNone'">
                     <span>{{list.name}}</span>
                     <span class = "taskCount" *ngIf = "list.tasks.length > 0">
                         {{getUnfinishedTaskcount(list.tasks)}}

@@ -8,8 +8,9 @@
                     <label for="checkbox"></label>
                 </div>
                 <div>
-                    <input type = "text" value = "{{activeTask.name}}" class = "taskTitleInRightPanel bold" #listInput
-                            [ngClass] = "activeTask.isFinished ? 'finished' : ''" (keydown.enter) = "updateTask(listInput)"/>
+                    <input type = "text" value = "{{activeTask.name}}" class = "taskTitleInRightPanel bold"
+                            #listInput [ngClass] = "activeTask.isFinished ? 'finished' : ''"
+                                    (keydown.enter) = "updateTask(listInput)"/>
                 </div>
             </div>
             <div id = "stepsContainer" *ngFor = "let step of activeTask.steps">
@@ -20,7 +21,8 @@
                         <label for = "{{step.id}}"></label>
                     </div>
                     <div class = "stepTitle">
-                        <input #stepInput type = "text" [ngClass] = "step.isFinished ? 'finished' : ''" value = "{{step.name}}"
+                        <input #stepInput type = "text" [ngClass] = "step.isFinished ? 'finished' : ''"
+                                value = "{{step.name}}"
                         (keydown.enter) = "updateStep(stepInput, step)"/>
                         <span class = "deletion" (click) = "deleteStep(step)">x</span>
                     </div>

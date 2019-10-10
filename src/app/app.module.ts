@@ -7,6 +7,7 @@ import { TodoHeaderComponent } from './todo-header/todo-header.component';
 import { TodoSidepanelComponent } from './todo-sidepanel/todo-sidepanel.component';
 import { TodoTasksComponent } from './todo-tasks/todo-tasks.component';
 import { TodoRightpanelComponent } from './todo-rightpanel/todo-rightpanel.component';
+import { ActiveListDirective } from './active-list.directive';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { TodoRightpanelComponent } from './todo-rightpanel/todo-rightpanel.compo
     TodoSidepanelComponent,
     TodoTasksComponent,
     TodoRightpanelComponent,
+    ActiveListDirective,
   ],
   imports: [
     BrowserModule,

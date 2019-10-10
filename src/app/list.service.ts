@@ -11,7 +11,6 @@ export class ListService {
     list: List;
 
     createList(listName: string) {
-        console.log(listName);
         return this.list = {id: uuid(), name: listName, tasks: []};
     }
 

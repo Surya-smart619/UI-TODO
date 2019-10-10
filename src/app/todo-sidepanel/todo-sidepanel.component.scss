@@ -1,14 +1,16 @@
+@import '../_variables';
+@import '../mixins';
+
 .leftPanel {
 	display: inline-block;
-}
-
-.leftPanel button {
-	cursor: pointer;
-	padding: 4px;
-	width: 32px;
-	height: 32px;
-	border: none;
-	background: transparent;
+	button {
+		cursor: pointer;
+		padding: 4px;
+		width: 32px;
+		height: 32px;
+		border: none;
+		background: transparent;
+	}
 }
 
 .leftPanelMenu {
@@ -20,18 +22,19 @@
 	padding-top: 8px;
     width: 290px;
 	transition: width 0.3s;
-	max-height: 85.6%;
-	overflow-y: auto;
+	@include set-scroll(85.6%);
 }
 
 .leftPanelContent {
 	height: 36px;
 	padding: 0px 12px;
-	color: #34373d;
-	font-size: 1.4rem;
+	@include set-font($side-panel-font-color, 1.4rem);
 	cursor: pointer;
-	background-color: rgb(244, 244, 244);
-	display:  flex;
+	background-color: $side-panel-bg;
+	display: flex;
+	&:hover {
+		background-color: $white-color;
+	}
 }
 
 .leftPanelTitle {
@@ -48,6 +51,6 @@
 
 .taskCount {
 	margin-left: auto;
-	color: #34373d;
+	color: $side-panel-font-color;
 	font-weight: 400;
 }
