@@ -25,7 +25,7 @@
     </div>
     <div class = "addTask">
         <button><label for = "taskInput"><i class = "fa fa-plus"></i></label></button>
-        <input id = "taskInput" type = "text" placeholder = "Add Task"
+        <input id = "taskInput" type = "text" placeholder = "Add task"
             #taskInput (keydown.enter) = "createTaskByName(taskInput)"/>
     </div>
     
@@ -35,7 +35,7 @@
     <div class = "lines"></div>
 </div>
 <div *ngIf = "contextTaskMenu" class = "contextMenuStyle" [ngStyle]="{'left.px': contextMenuX, 'top.px': contextMenuY}"
-        (click) = "deleteTask($event)">
+        (click) = "deleteTask()">
     <div>
         <span><i class="fa fa-trash-o"></i></span>
         <span>Delete Task</span>

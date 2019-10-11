@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuid } from 'uuid';
-import { Step } from './step';
-import { Task } from './task';
+import { Step } from '../model/step';
+import { Task } from '../model/task';
 
 @Injectable({
     providedIn: 'root'

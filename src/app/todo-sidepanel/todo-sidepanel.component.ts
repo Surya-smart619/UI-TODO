@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { List } from '../list';
-import { ListService } from '../list.service';
-import { DataService } from '../data.service';
-import { Task } from '../task';
+import { List } from '../model/list';
+import { ListService } from '../service/list.service';
+import { DataService } from '../service/data.service';
+import { Task } from '../model/task';
 
 @Component({
     selector: 'app-todo-sidepanel',
@@ -25,11 +25,19 @@ export class TodoSidepanelComponent implements OnInit {
         this.createDefaultList();
     }
 
+    /**
+     * Create Default List when Application starts.
+     */
     createDefaultList() {
         this.defaultList = this.listService.createList('Tasks');
         this.activateList(this.defaultList);
     }
 
+    /**
+     * Creates List by name.
+     *
+     * @param listInput - It used to get specified name.
+     */
     createListByName(listInput: { value: string; }) {
         if (listInput.value !== '') {
             const createdList = this.listService.createList(listInput.value);
@@ -39,14 +47,25 @@ export class TodoSidepanelComponent implements OnInit {
         }
     }
 
+    /**
+     * Toggles SidePanel to Open and Close by changing boolean variable.
+     */
     sidePanelToggleOperation() {
         this.isSideMenuOpened = !this.isSideMenuOpened;
     }
 
+    /**
+     * Opens side menu by declaring boolean variable 'true'.
+     */
     openSideMenu() {
         this.isSideMenuOpened = true;
     }
 
+    /**
+     * Activates List for further access.
+     *
+     * @param list - It specifies that list to be activate.
+     */
     activateList(list) {
         this.dataService.changeActiveList(list);
         this.closeTaskDetails();

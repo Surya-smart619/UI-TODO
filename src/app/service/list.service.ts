@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuid } from 'uuid';
-import { List } from './list';
+import { List } from '../model/list';
 
 @Injectable({
     providedIn: 'root'

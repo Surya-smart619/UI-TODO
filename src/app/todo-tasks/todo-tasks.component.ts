@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TaskService } from '../task.service';
-import { DataService } from '../data.service';
-import { List } from '../list';
-import { Task } from '../task';
-import { Step } from '../step';
-import { ListService } from '../list.service';
+import { TaskService } from '../service/task.service';
+import { DataService } from '../service/data.service';
+import { List } from '../model/list';
+import { Task } from '../model/task';
+import { Step } from '../model/step';
+import { ListService } from '../service/list.service';
 
 @Component({
     selector: 'app-todo-tasks',
@@ -24,6 +24,11 @@ export class TodoTasksComponent implements OnInit {
         this.dataService.activeList.subscribe(list => this.activeList = list);
     }
 
+    /**
+     * Creates Task by name.
+     *
+     * @param taskInput - It is used to get specified name.
+     */
     createTaskByName(taskInput: { value: string; }) {
         if (taskInput.value !== '') {
             const task = this.taskService.createTask(taskInput);
@@ -32,19 +37,38 @@ export class TodoTasksComponent implements OnInit {
         }
     }
 
+    /**
+     * Activates Given task.
+     *
+     * @param task - It specifies that task.
+     */
     activateTask(task: Task) {
         this.dataService.changeActiveTask(task);
         this.openTaskDetails();
     }
 
+    /**
+     * Opens Task Details.
+     */
     openTaskDetails() {
         this.dataService.toggleTaskDetail(true);
     }
 
+    /**
+     * Toggles Task's isfinished variable.
+     *
+     * @param task - It specifies that task.
+     */
     toggleTaskFinished(task: Task) {
         task.isFinished = !task.isFinished;
     }
 
+    /**
+     * Shows Context menu in clicked position and target the Task.
+     *
+     * @param event - It is used to get position of context menu.
+     * @param task - It specifies that task.
+     */
     showTaskContextMenu(event, task: Task) {
         this.contextMenuX = event.clientX;
         this.contextMenuY = event.clientY;
@@ -52,21 +76,37 @@ export class TodoTasksComponent implements OnInit {
         this.targetTask = task;
     }
 
-    deleteTask(event) {
+    /**
+     * Deletes Task.
+     */
+    deleteTask() {
         if (confirm('Are you sure want to delete Task ' + this.targetTask.name)) {
             this.taskService.deleteTask(this.activeList, this.targetTask);
             this.disableTaskContextMenu();
         }
     }
 
+    /**
+     * Disables Context menu.
+     */
     disableTaskContextMenu() {
         this.contextTaskMenu = false;
     }
 
+    /**
+     * Gets finished Step Count.
+     *
+     * @param steps - It used to get that specified count.
+     */
     getFinishedStepsCount(steps: Step[]) {
         return steps.filter(step => step.isFinished === true).length;
     }
 
+    /**
+     * Updates List with new name.
+     *
+     * @param newListInput - It specifies that new name.
+     */
     updateList(newListInput) {
         this.listService.updateList(this.activeList, newListInput.value);
         newListInput.blur();
