@@ -71,14 +71,25 @@ export class TodoSidepanelComponent implements OnInit {
         this.closeTaskDetails();
     }
 
+    /**
+     * Closes the Task details.
+     */
     closeTaskDetails() {
         this.dataService.toggleTaskDetail(false);
     }
 
+    /**
+     * Activates Default List.
+     */
     changeDefaultListAsActive() {
         this.activateList(this.defaultList);
     }
-
+    /**
+     * Shows Context menu in clicked position and target the List.
+     *
+     * @param event - It is used to get position of context menu.
+     * @param list - It specifies that list.
+     */
     showListContextMenu(event, list: List) {
         this.contextMenuX = event.clientX;
         this.contextMenuY = event.clientY;
