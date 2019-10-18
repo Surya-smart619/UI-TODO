@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import uuid from "uuid";
+
 import './sidePanel.scss';
 
 export class List {
@@ -10,12 +12,25 @@ export class List {
 class SideMenu extends Component {
     state = {
         list: List,
-        todos:  [],
-        isSideMenuOpened: true
+        todos: [],
+        isSideMenuOpened: true,
+        activeList: null,
     }
-    render() { 
+    render() {
+        let listInput = React.createRef(); 
+        function createListByName(event) {
+            if('Enter' === event.key &&  '' !== listInput.current.value) {
+                let list = new List();
+                list.id = uuid();
+                list.name = listInput.current.value;
+                list.tasks = [];
+                listInput.current.value = '';
+                this.setState({todos: [...this.state.todos, list]});
+            }
+        }
+
         return (
-            <div className = "leftPanel">
+            <div className = "leftPanel">  
                 <div className = "leftPanelMenu">
                     <button id = "sideBarButton" onClick = {this.sidePanelToggleOperation}>
                         <i className = "fa fa-bars"></i>
@@ -57,7 +72,8 @@ class SideMenu extends Component {
                 <div className = "leftPanelContent listInput">
                     <label onClick = {this.openSideMenu}><i className = "fa fa-plus"></i>
                         <input className = {this.state.isSideMenuOpened ? '' : 'displayNone'}
-                            id = "listInput" type = "text" onKeyPress = {this.createListByName} placeholder = "New list"/>
+                            id = "listInput" type = "text" placeholder = "New list" ref = {listInput}
+                                onKeyPress = {createListByName.bind(this)}/>
                     </label>
                 </div>
             </div>
@@ -80,22 +96,26 @@ class SideMenu extends Component {
         return (
             <div id = "sideList">
             {
-            this.state.todos.map((list) => {
-            return ( <div className = "leftPanelContent" onClick = "activateList(list)">
-                <i className = "fa fa-list"></i>
-                <div className = {"list" + this.state.isSideMenuOpened ? 'leftPanelTitle' : 'displayNone'}>
-                    <span>{list.name}</span>
-                </div>
-            </div> );
-            })}
+                this.state.todos.map((list) => {
+                return (
+                    <div className = "leftPanelContent" onClick = {() => this.activateList(list)}>
+                        <i className = "fa fa-list"></i>
+                        <div className = {"list" + this.state.isSideMenuOpened ? 'leftPanelTitle' : 'displayNone'}>
+                            <span>{list.name}</span>
+                        </div>
+                    </div>
+                );
+                })
+            }
             </div>
         );
     }
-
-
-    createListByName = () => {
-
+    
+    activateList = (list) => {
+        this.props.setActiveList(list);
+        console.log();
     }
 }
+
 
 export default SideMenu;
