@@ -1,0 +1,56 @@
+@import '../_variables';
+@import '../mixins';
+
+.leftPanel {
+	display: inline-block;
+	button {
+		cursor: pointer;
+		padding: 4px;
+		width: 32px;
+		height: 32px;
+		border: none;
+		background: transparent;
+	}
+}
+
+.leftPanelMenu {
+	height: 48px;
+	margin-top: 12px;
+}
+
+.leftPanelContainer {
+	padding-top: 8px;
+    width: 290px;
+	transition: width 0.3s;
+	@include set-scroll(85.6%);
+}
+
+.leftPanelContent {
+	height: 36px;
+	padding: 0px 12px;
+	@include set-font($side-panel-font-color, 1.4rem);
+	cursor: pointer;
+	background-color: $side-panel-bg;
+	display: flex;
+	&:hover {
+		background-color: $white-color;
+	}
+}
+
+.leftPanelTitle {
+	margin: 0 8px;
+	display: flex;
+	width: 100%;
+}
+
+#listInput {
+	padding: 6px;
+	border: none;
+	width: auto;
+}
+
+.taskCount {
+	margin-left: auto;
+	color: $side-panel-font-color;
+	font-weight: 400;
+}

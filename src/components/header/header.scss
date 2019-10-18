@@ -1,0 +1,16 @@
+@import '../_variables.scss';
+@import '../_mixins.scss';
+
+.header {
+	height: 6.4%;
+	background: $dark-blue-color;
+	position: relative;
+}
+
+.appName {
+	cursor: pointer;
+	display: inline-block;
+	padding: 0px 19px;
+	line-height: 48px;
+	@include set-font($white-color, 1.4rem);
+}

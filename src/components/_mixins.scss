@@ -1,0 +1,9 @@
+@mixin set-font($font-color, $font-size) {
+    color: $font-color;
+    font-size: $font-size;
+}
+
+@mixin set-scroll($max-height) {
+    max-height: $max-height;
+    overflow-y: auto;
+}
